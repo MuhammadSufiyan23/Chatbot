@@ -35,10 +35,10 @@ apiClient.interceptors.request.use((config) => {
 
 // Chat API functions
 export const chatApi = {
-  sendMessage: async (userId: string, message: string, conversationId?: number | null) => {
+  sendMessage: async (userId: string, message: string, conversationId?: number | null | undefined) => {
     const requestBody = {
       message,
-      conversation_id: conversationId || null
+      conversation_id: conversationId ?? null
     };
 
     try {
