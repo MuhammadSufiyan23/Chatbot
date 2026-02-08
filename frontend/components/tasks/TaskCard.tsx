@@ -15,6 +15,7 @@ interface TaskCardProps {
     completed: boolean;
     dueDate: string | null;
     priority: 'low' | 'medium' | 'high' | null;
+    displayId?: number;  // Simple numeric ID for display
   };
   index?: number;
   onToggle: (id: string, newCompleted: boolean) => Promise<void>; // Parent ko await karne ke liye
@@ -126,6 +127,16 @@ export function TaskCard({
       )} />
 
       <div className="flex items-start gap-3 flex-1 pl-2">
+        {/* Task Number Badge - DEBUG */}
+        {console.log('[TaskCard] Task:', task.title, 'displayId:', task.displayId, 'type:', typeof task.displayId)}
+        {(typeof task.displayId === 'number' && task.displayId > 0) && (
+          <div className="flex-shrink-0 mt-0.5">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
+              {task.displayId}
+            </div>
+          </div>
+        )}
+
         <button
           onClick={handleToggle}
           disabled={isLoading}
