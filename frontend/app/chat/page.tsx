@@ -39,7 +39,7 @@ export default function ChatPage() {
     }
   }, [messages]);
 
-  const [currentConversationId, setCurrentConversationId] = useState<number | undefined>(undefined);
+  const [currentConversationId, setCurrentConversationId] = useState<number | null | undefined>(undefined);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -292,3 +292,8 @@ export default function ChatPage() {
     </div>
   );
 }
+
+
+
+
+
