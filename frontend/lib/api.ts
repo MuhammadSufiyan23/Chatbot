@@ -94,7 +94,18 @@ const transformTask = (backendTask: any): Task => {
 // Transform response ONLY for task-related endpoints
 const transformResponse = <T>(rawResult: any, endpoint: string): T => {
   if (endpoint.startsWith('/tasks')) {
-    if (rawResult.task) rawResult.task = transformTask(rawResult.task);
+    // ✅ Handle case where response is directly an array of tasks
+    if (Array.isArray(rawResult)) {
+      console.log('[API Transform] Response is array, transforming all tasks');
+      return rawResult.map(transformTask) as T;
+    }
+
+    // Handle case where response has a 'task' property (single task)
+    if (rawResult.task) {
+      rawResult.task = transformTask(rawResult.task);
+    }
+
+    // Handle case where response has a 'tasks' property (array of tasks)
     if (rawResult.tasks && Array.isArray(rawResult.tasks)) {
       rawResult.tasks = rawResult.tasks.map(transformTask);
     }
@@ -222,7 +233,21 @@ class ApiClient {
     const queryString = params.toString();
     const endpoint = `/tasks${queryString ? `?${queryString}` : ''}`;
 
-    return this.request<GetTasksResponse>(endpoint);
+    console.log('[API] Fetching tasks from:', endpoint);
+
+    // ✅ Backend returns array directly, not wrapped in object
+    const result = await this.request<Task[]>(endpoint);
+
+    console.log('[API] getTasks raw result:', result);
+    console.log('[API] First task displayId:', result[0]?.displayId);
+
+    // ✅ Wrap array in GetTasksResponse format for frontend compatibility
+    return {
+      tasks: result,
+      totalCount: result.length,
+      currentPage: 1,
+      totalPages: 1
+    };
   }
 
   async getTaskById(id: string): Promise<Task> {
