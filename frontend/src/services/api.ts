@@ -42,7 +42,7 @@ export const chatApi = {
     };
 
     try {
-      const response = await apiClient.post(`/api/${userId}/chat`, requestBody);
+      const response = await apiClient.post(`/${userId}/chat`, requestBody);
 
       // Handle different response structures gracefully
       if (response.data && typeof response.data === 'object') {
@@ -77,27 +77,27 @@ export const chatApi = {
 // Existing todo API functions
 export const todoApi = {
   getTodos: async () => {
-    const response = await apiClient.get('/api/tasks');
+    const response = await apiClient.get('/tasks');
     return response.data;
   },
 
   addTodo: async (todoData: { title: string; description?: string; completed?: boolean }) => {
-    const response = await apiClient.post('/api/tasks', todoData);
+    const response = await apiClient.post('/tasks', todoData);
     return response.data;
   },
 
   updateTodo: async (id: string, todoData: Partial<{ title: string; description?: string; completed?: boolean }>) => {
-    const response = await apiClient.put(`/api/tasks/${id}`, todoData);
+    const response = await apiClient.put(`/tasks/${id}`, todoData);
     return response.data;
   },
 
   deleteTodo: async (id: string) => {
-    const response = await apiClient.delete(`/api/tasks/${id}`);
+    const response = await apiClient.delete(`/tasks/${id}`);
     return response.data;
   },
 
   toggleComplete: async (id: string) => {
-    const response = await apiClient.patch(`/api/tasks/${id}/toggle-complete`);
+    const response = await apiClient.patch(`/tasks/${id}/toggle-complete`);
     return response.data;
   }
 };
