@@ -67,7 +67,7 @@ const ensureHttpsProtocol = (url: string): string => {
 // Helper to transform backend task (snake_case → camelCase)
 const transformTask = (backendTask: any): Task => {
   if (!backendTask) return {} as Task;
-  console.log('[API Transform RAW] Backend task:', backendTask);
+  console.log('[API Transform] RAW backend task:', backendTask);
 
   const transformedTask: Task = {
     id: backendTask.id || backendTask._id,
@@ -82,7 +82,12 @@ const transformTask = (backendTask: any): Task => {
     priority: backendTask.priority || backendTask.Priority || null,
   };
 
-  console.log('[API Transform FINAL] dueDate & priority:', { dueDate: transformedTask.dueDate, priority: transformedTask.priority });
+  console.log('[API Transform] FINAL task:', {
+    id: transformedTask.id,
+    displayId: transformedTask.displayId,
+    title: transformedTask.title
+  });
+
   return transformedTask;
 };
 
@@ -225,10 +230,18 @@ class ApiClient {
   }
 
   async createTask(taskData: Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<CreateTaskResponse> {
-    return this.request<CreateTaskResponse>('/tasks', {
+    console.log('[API] Creating task:', taskData);
+
+    const response = await this.request<CreateTaskResponse>('/tasks', {
       method: 'POST',
       body: JSON.stringify(taskData),
     });
+
+    console.log('[API] Task created - Full response:', response);
+    console.log('[API] Task UUID:', response.task?.id);
+    console.log('[API] Task displayId:', response.task?.displayId);
+
+    return response;
   }
 
   async updateTask(id: string, taskData: Partial<Task>): Promise<UpdateTaskResponse> {
