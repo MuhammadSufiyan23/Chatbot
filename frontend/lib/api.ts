@@ -11,6 +11,7 @@ if (!API_BASE.startsWith('https://')) {
 // Define frontend types (camelCase)
 export interface Task {
   id: string;
+  displayId?: number;  // Simple numeric ID for display
   title: string;
   description?: string;
   completed: boolean;
@@ -70,6 +71,7 @@ const transformTask = (backendTask: any): Task => {
 
   const transformedTask: Task = {
     id: backendTask.id || backendTask._id,
+    displayId: backendTask.display_id || backendTask.displayId,
     title: backendTask.title,
     description: backendTask.description,
     completed: backendTask.completed || false,
