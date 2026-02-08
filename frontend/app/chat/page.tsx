@@ -99,7 +99,11 @@ export default function ChatPage() {
       }
 
       // Send message to backend
-      const response: any = await chatApi.sendMessage(userId, inputMessage, currentConversationId);
+      const response: any = await chatApi.sendMessage(
+        userId,
+        inputMessage,
+        currentConversationId ?? undefined
+      );
 
       // Add assistant response to UI
       const assistantMessage: Message = {
@@ -122,7 +126,7 @@ export default function ChatPage() {
 
       // Check if it's an authentication error
       if (error.message?.includes('Authentication required') ||
-          (error.response && (error.response.status === 401 || error.response.status === 403))) {
+        (error.response && (error.response.status === 401 || error.response.status === 403))) {
         errorMessageText = 'Your session expired. Please log in again.';
       } else if (error.message?.includes('Network error')) {
         errorMessageText = 'Unable to reach the server. Please check your connection.';
@@ -214,11 +218,10 @@ export default function ChatPage() {
                         className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-2xl p-4 ${
-                            message.role === 'user'
-                              ? 'bg-indigo-600 text-white rounded-br-none'
-                              : 'bg-gray-800 text-gray-100 rounded-bl-none'
-                          }`}
+                          className={`max-w-[80%] rounded-2xl p-4 ${message.role === 'user'
+                            ? 'bg-indigo-600 text-white rounded-br-none'
+                            : 'bg-gray-800 text-gray-100 rounded-bl-none'
+                            }`}
                         >
                           <div className="flex items-start gap-3">
                             {message.role === 'assistant' && (
@@ -226,9 +229,8 @@ export default function ChatPage() {
                             )}
                             <div className="flex-1">
                               <p className="whitespace-pre-wrap">{message.content}</p>
-                              <p className={`text-xs mt-2 ${
-                                message.role === 'user' ? 'text-indigo-200' : 'text-gray-500'
-                              }`}>
+                              <p className={`text-xs mt-2 ${message.role === 'user' ? 'text-indigo-200' : 'text-gray-500'
+                                }`}>
                                 {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </p>
                             </div>
