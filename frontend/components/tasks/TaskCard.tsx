@@ -36,6 +36,14 @@ export function TaskCard({
   const [isCompleting, setIsCompleting] = useState(task.completed);
   const [isLoading, setIsLoading] = useState(false);
 
+  // ✅ DEBUG LOG - Check displayId
+  console.log('[TaskCard] Rendering:', {
+    title: task.title,
+    displayId: task.displayId,
+    type: typeof task.displayId,
+    hasDisplayId: task.displayId !== undefined
+  });
+
   // Update local state when task prop changes
   useEffect(() => {
     setIsCompleting(task.completed);
@@ -127,8 +135,7 @@ export function TaskCard({
       )} />
 
       <div className="flex items-start gap-3 flex-1 pl-2">
-        {/* Task Number Badge - DEBUG */}
-        {console.log('[TaskCard] Task:', task.title, 'displayId:', task.displayId, 'type:', typeof task.displayId)}
+        {/* Task Number Badge */}
         {(typeof task.displayId === 'number' && task.displayId > 0) && (
           <div className="flex-shrink-0 mt-0.5">
             <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
