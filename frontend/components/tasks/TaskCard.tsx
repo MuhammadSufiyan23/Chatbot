@@ -135,15 +135,6 @@ export function TaskCard({
       )} />
 
       <div className="flex items-start gap-3 flex-1 pl-2">
-        {/* Task Number Badge */}
-        {(typeof task.displayId === 'number' && task.displayId > 0) && (
-          <div className="flex-shrink-0 mt-0.5">
-            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold">
-              {task.displayId}
-            </div>
-          </div>
-        )}
-
         <button
           onClick={handleToggle}
           disabled={isLoading}
@@ -200,6 +191,15 @@ export function TaskCard({
       </div>
 
       <div className="flex items-center gap-1 ml-2">
+        {/* Task Number Badge - Right Side */}
+        {(typeof task.displayId === 'number' && task.displayId > 0) && (
+          <div className="flex-shrink-0">
+            <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-bold">
+              #{task.displayId}
+            </div>
+          </div>
+        )}
+
         <Button
           variant="ghost"
           size="sm"
