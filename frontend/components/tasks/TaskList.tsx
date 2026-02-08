@@ -3,6 +3,7 @@ import { TaskCard } from '@/components/tasks/TaskCard';
 
 interface Task {
   id: string;
+  displayId?: number;  // Simple numeric ID for display
   title: string;
   description?: string;
   completed: boolean;
